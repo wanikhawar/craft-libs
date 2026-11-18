@@ -1,0 +1,27 @@
+name: Draw scratch
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  native:
+    name: Draw
+    uses: storytold/craft-common-actions/.github/workflows/gate.yml@main
+    with:
+      os: '["ubuntu-latest"]'
+      timeout-minutes: 120
+      packages: mesa-vulkan-drivers libvulkan1
+      craft-fonts-ref: b076417b5880bd4154bd22f00695b1d28c6bea83
+      linux-env: WGPU_BACKEND=vulkan
+      env: CRAFT_PRINT_REQUIRE_QUEUE=0
+      command: |
+        set -uo pipefail
+        status=0
+        cargo clippy -p craft-draw --all-targets --locked -- -D warnings || status=1
+        cargo clippy -p craft-draw --all-targets --all-features --locked -- -D warnings || status=1
+        cargo test -p craft-draw --locked || status=1
+        cargo test -p craft-draw --all-features --locked || status=1
+        exit $status
