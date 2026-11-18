@@ -21,8 +21,8 @@ jobs:
       command: |
         set -uo pipefail
         status=0
-        cargo clippy -p craft-draw --all-targets --locked -- -D warnings || status=1
-        cargo clippy -p craft-draw --all-targets --all-features --locked -- -D warnings || status=1
+        cargo clippy -p craft-draw --no-deps --all-targets --locked -- -D warnings || status=1
+        cargo clippy -p craft-draw --no-deps --all-targets --all-features --locked -- -D warnings || status=1
         cargo test -p craft-draw --locked || status=1
         cargo test -p craft-draw --all-features --locked || status=1
         exit $status
