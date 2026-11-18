@@ -1,7 +1,8 @@
 name: Draw scratch
 
 on:
-  workflow_dispatch:
+  push:
+    branches: ["scratch/**"]
 
 permissions:
   contents: read
